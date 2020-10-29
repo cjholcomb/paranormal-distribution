@@ -63,7 +63,7 @@ def dataset_cleanup(df):
     q_mask = df['is_quote'] == 1
 
     #creates a "q_is_reply" 1/0, drops the more complicated one
-    df['q_is_reply'] = df['quoted_status.in_reply_to_status_id'] / dfdf['quoted_status.in_reply_to_status_id']
+    df['q_is_reply'] = df['quoted_status.in_reply_to_status_id'] / df['quoted_status.in_reply_to_status_id']
     df['q_is_reply'] = np.where(q_mask, df['q_is_reply'].fillna(0), df['q_is_reply'])
     df.drop(columns = ['quoted_status.in_reply_to_status_id'], inplace = True)
 
@@ -88,7 +88,7 @@ def dataset_cleanup(df):
     r_mask = df['is_retweet'] == 1
 
     #creates a "r_is_reply" 1/0, drops the more complicated one
-    df['r_is_reply'] = df['retweeted_status.in_reply_to_status_id'] / dfdf['retweeted_status.in_reply_to_status_id']
+    df['r_is_reply'] = df['retweeted_status.in_reply_to_status_id'] / df['retweeted_status.in_reply_to_status_id']
     df['r_is_reply'] = np.where(r_mask, df['r_is_reply'].fillna(0), df['r_is_reply'])
     df.drop(columns = ['retweeted_status.in_reply_to_status_id'], inplace = True)
 
@@ -114,8 +114,7 @@ def dataset_cleanup(df):
 
 def basic_dataset(df):
     #drops columns for a very basic dataset. No quote tweet or retweet info.
-    breakpoint()
-    return df.drop(columns = basic_drop, axis = 1, inplace = True)
+    return df.drop(columns = basic_drop)
 
 def quote_dataset(df):
     #drops all non-quote-tweet rows, and all retweet variables. Use his dataframe for expanding on quote tweet importance.
@@ -129,15 +128,18 @@ def retweet_dataset(df):
     df = df[df['is_retweet'] == 1]
     return df
 
+def export_jsons():
+    df_basic.to_json('../data/basic_dataset.json')
+    df_quote.to_json('../data/quote_dataset.json')
+    df_retweet.to_json('../data/retweet_dataset.json')   
+
 if __name__ == '__main__':
     #placeholder df import
     # df = pd.read_csv('../../data/smtweetdata.csv', usecols= features_original)
     path = '../data/concatenated_abridged.jsonl'
     df = setup_df(path)
-
-    #df = only the cols listed in features_original
-
     df = dataset_cleanup(df)
     df_basic = basic_dataset(df)
     df_quote = quote_dataset(df)
     df_retweet = retweet_dataset(df)
+    export_jsons()

@@ -34,8 +34,7 @@ rename_schema = {'Unnamed: 0':'index', 'created_at':'tweet_date', 'id':'tweet_id
 'retweeted_status.user.followers_count':'ru_followers', 'retweeted_status.user.created_at':'ru_created', 'retweeted_status.user.verified':'ru_verified', 'retweeted_status.user.default_profile_image':'ru_egg'}
 
 #final column order for the cleaned dataset
-column_order = ['index',
- 'tweet_id',
+column_order = [ 'tweet_id',
  'tweet_date',
  'tweet_text',
  
@@ -124,9 +123,9 @@ retweet_columns = ['r_is_reply',
  'ru_created',]
 
  #columns to drop for the basic dataset
-basic_drop = ['index',
+basic_drop = [
 
- 'quoted_status.in_reply_to_status_id',
+ 'q_is_reply',
   'q_quote',
   'q_sensitive',
 
@@ -142,7 +141,7 @@ basic_drop = ['index',
  'qu_followers',
  'qu_created',
 
-'retweeted_status.in_reply_to_status_id',
+'r_is_reply',
  'r_quote',
   'r_sensitive',
 
