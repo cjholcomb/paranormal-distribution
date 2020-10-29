@@ -41,44 +41,34 @@ def get_cos_sim(df, col1, col2):
     return cosine_similarity(col1, col2)
 
 if __name__ == "__main__":
-    path = '../data/concatenated_abridged.jsonl'
-    df = setup_df(path)
+    df = pd.read_json('../data/basic_dataset.json')
 
     sent = VaderSentiment()
-
+    part = df.sample(n = 5000)
     # BE READY
-    sent_df = sent.predict(df, 'full_text')
+    sent_df = sent.predict(part, 'tweet_text')
 
     plt.hist(sent_df['compound'])
-    plt.show()
+    plt.show();
 
-    sent_df['highest_prob'] = -1
-    for row in range(sent_df.shape[0]):
-        row_idx = np.argmax(np.array(sent_df.iloc[0,0:3]))
-        sent_df.at[row, 'highest_prob'] = row_idx
+    # for row in range(sent_df.shape[0]):
+    #     row_idx = np.argmax(np.array(sent_df.iloc[row,0:3]))
+    #     sent_df.at[row, 'compound_cohort'] = row_idx
 
-    sent_df['compound_category'] = None
     for row, num in enumerate(sent_df['compound']):
-        if num < -0.6:
+        if num < -0.5:
             sent_df.at[row, 'compound_category'] = -1
-        elif num < 0.6:
+        elif num < 0.5:
             sent_df.at[row, 'compound_category'] = 0
         else:
             sent_df.at[row, 'compound_category'] = 1
     
     plt.hist(sent_df['compound_category'])
-    plt.show()
+    plt.show();
 
     neg_df = sent_df[sent_df['compound_category'] == -1].copy()
     neu_df = sent_df[sent_df['compound_category'] == 0].copy()
     pos_df = sent_df[sent_df['compound_category'] == 1].copy()
-
-    neu_df['lower_text'] = neu_df['tweet'].apply(lambda x: str(x).lower())
-    neu_df['lemmatized'] = neu_df['lower_text'].apply(lambda x: lemmatizer(x))
-
-
-
-
 
 '''
     #EDA
