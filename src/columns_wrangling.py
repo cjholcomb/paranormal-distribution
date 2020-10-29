@@ -122,3 +122,41 @@ retweet_columns = ['r_is_reply',
 
  'ru_followers',
  'ru_created',]
+
+ #columns to drop for the basic dataset
+ basic_drop = ['index',
+
+ 'quoted_status.in_reply_to_status_id',
+  'q_quote',
+  'q_sensitive',
+
+ 'q_retweets',
+ 'q_favorites',
+
+ 'q_hashtags',
+ 'q_mentions',
+
+ 'qu_verified',
+ 'qu_egg',
+
+ 'qu_followers',
+ 'qu_created',
+
+'retweeted_status.in_reply_to_status_id',
+ 'r_quote',
+  'r_sensitive',
+
+ 'r_retweets',
+ 'r_favorites',
+
+ 'r_hashtags',
+ 'r_mentions',
+
+ 'ru_verified',
+ 'ru_egg',
+
+ 'ru_followers',
+ 'ru_created',
+
+ 'retweets',
+ 'favorites',]
