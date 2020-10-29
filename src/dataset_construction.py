@@ -3,8 +3,23 @@ from datetime import date
 import json
 import csv 
 import numpy as np
-from src.columns_wrangling import *
+from columns_wrangling import *
 
+def setup_df(path):
+    '''
+    set up dataframe of tweets
+    input: 
+        path to jsonl file
+    output: 
+        dataframe of all information
+    '''
+    with open(path, 'r') as json_file:
+        json_lines = json_file.read().splitlines()
+    df_inter = pd.DataFrame(json_lines)
+    df_inter.columns = ['json_element']
+    df_inter['json_element'].apply(json.loads)
+    df_final = pd.json_normalize(df_inter['json_element'].apply(json.loads))
+    return df_final
 
 def dataset_cleanup(df):
     '''
@@ -101,13 +116,13 @@ def basic_dataset(df):
     #drops columns for a very basic dataset. No quote tweet or retweet info.
     return df.drop(columns = basic_drop)
 
-def quote_dataset(df)
+def quote_dataset(df):
     #drops all non-quote-tweet rows, and all retweet variables. Use his dataframe for expanding on quote tweet importance.
     df = df.drop(columns = retweet_columns)
     df = df[df['is_quote'] == 1]
     return df
 
-def retweet_dataset(df)
+def retweet_dataset(df):
     #drops all non-retweet rows, and all retweet variables. Use his dataframe for expanding on quote tweet importance.
     df = df.drop(columns = quote_columns)
     df = df[df['is_retweet'] == 1]
@@ -115,7 +130,9 @@ def retweet_dataset(df)
 
 if __name__ == '__main__':
     #placeholder df import
-    df = pd.read_csv('../../data/smtweetdata.csv', usecols= features_original)
+    # df = pd.read_csv('../../data/smtweetdata.csv', usecols= features_original)
+    path = '../data/concatenated_abridged.jsonl'
+    df = setup_df(path)
 
     df_basic = basic_dataset(df)
     df_quote = quote_dataset(df)
