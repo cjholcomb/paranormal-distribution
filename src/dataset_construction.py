@@ -4,6 +4,7 @@ import json
 import csv 
 import numpy as np
 from columns_wrangling import *
+from sentiment import *
 
 def setup_df(path):
     '''
@@ -26,7 +27,8 @@ def dataset_cleanup(df):
     reorganizes the dataset to be more manageable and understandable
 
     Arguments:
-    df -- Pandas Dataframe (imported from full dataset)'''
+    df -- Pandas Dataframe (imported from full dataset)
+    '''
     
     #renames columns
     df.rename(columns = rename_schema, inplace = True)
@@ -143,3 +145,10 @@ if __name__ == '__main__':
     df_quote = quote_dataset(df)
     df_retweet = retweet_dataset(df)
     export_jsons()
+
+    #get sentiment of each tweet
+    sent = VaderSentiment()
+    sent_df = sent.predict(df, 'tweet_text')
+
+    #merge sent_df with full df
+    # df = pd.merge(df, sent_df, on = 'tweet_text')
