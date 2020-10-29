@@ -1,0 +1,58 @@
+Shorthand:
+
+u_  : user(tweeter) account info
+q_  : info on quoted tweet
+qu_ : info on quoted user
+r_  : info on retweeted tweet
+ru_ : info on retweted  user
+
+index                                       int64           original index of tweet 
+tweet_id                               int64           unique tweet id number (from twitter api)
+tweet_date                             object          datetime of tweet(server time)
+tweet_text                             object          full text of tweet, used for NLP
+is_reply                               float64         1- is a reply, 0 -is not a reply
+is_quote                               float64         1- is a quote tweet, 0 -is not a quote tweet
+sensitive                              int64           1- is a sensitve tweet, 0 -is not a sensitive tweet
+hashtags                               list of dicts   Breakdown of all hashtags used in tweet          
+mentions                               list of dicts   Breakdown of all users tagged in tweet
+
+u_verified                             float64         1- user is verified, 0 -user is not verified
+u_egg                                  int64           1- uses default pfp, 0 -has unique pfp
+u_followers                            float64         # of user followers
+u_created                              object          datetime user account created
+
+q_is_reply                             float64
+q_quote                                object 
+q_sensitive                            object 
+q_retweets                             float64
+q_favorites                            float64
+q_hashtags                             object 
+q_mentions                             object 
+
+qu_verified                            object 
+qu_egg                                 object 
+qu_followers                           float64
+qu_created                             object 
+
+r_is_repluy                            float64
+r_quote                                object 
+r_sensitive                            object 
+r_retweets                             float64
+r_favorites                            float64
+r_hashtags                             object 
+r_mentions                             object 
+ru_verified                            object 
+ru_egg                                 object 
+ru_followers                           float64
+ru_created                             object 
+
+retweets                               int64            TARGET: # of retweets
+favorites                              int64            TARGET: # of favorites
+
+
+
+
+
+
+
+
