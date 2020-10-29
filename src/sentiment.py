@@ -11,7 +11,7 @@ class VaderSentiment():
 
     def predict(self, df, col):
         ''' return new dataframe with prediction columns on tweet '''
-        sentiment_df = pd.DataFrame(columns = ['neg','neu','pos','compound', 'tweet'])
+        sentiment_df = pd.DataFrame(columns = ['neg','neu','pos','compound', 'tweet', 'highest_label'])
         for tweet in df[col]:
             prob = self.vader.polarity_scores(tweet)
             sentiment_df = sentiment_df.append({'neg':prob['neg'], 'neu':prob['neu'],

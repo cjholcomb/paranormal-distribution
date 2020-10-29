@@ -4,7 +4,11 @@ molly's py file
 import pandas as pd 
 import numpy as np
 import json
+import seaborn as sns
+import matplotlib.pyplot as plt
+sns.set()
 from sklearn.metrics.pairwise import cosine_similarity
+from sentiment import *
 
 def setup_df(path):
     '''
@@ -14,13 +18,12 @@ def setup_df(path):
     output: 
         dataframe of all information
     '''
-    with open('data/concatenated_abridged.jsonl', 'r') as json_file:
+    with open(path, 'r') as json_file:
         json_lines = json_file.read().splitlines()
     df_inter = pd.DataFrame(json_lines)
     df_inter.columns = ['json_element']
-    df_inter['json_element'].apply(json.loads)
     df_final = pd.json_normalize(df_inter['json_element'].apply(json.loads))
-    df_final.to_json('full_tweets.json')
+    return df_final
 
 def get_cos_sim(df, col1, col2):
     ''' 
@@ -38,7 +41,44 @@ def get_cos_sim(df, col1, col2):
     return cosine_similarity(col1, col2)
 
 if __name__ == "__main__":
-    pass
+    path = '../data/concatenated_abridged.jsonl'
+    df = setup_df(path)
+
+    sent = VaderSentiment()
+
+    # BE READY
+    sent_df = sent.predict(df, 'full_text')
+
+    plt.hist(sent_df['compound'])
+    plt.show()
+
+    sent_df['highest_prob'] = -1
+    for row in range(sent_df.shape[0]):
+        row_idx = np.argmax(np.array(sent_df.iloc[0,0:3]))
+        sent_df.at[row, 'highest_prob'] = row_idx
+
+    sent_df['compound_category'] = None
+    for row, num in enumerate(sent_df['compound']):
+        if num < -0.6:
+            sent_df.at[row, 'compound_category'] = -1
+        elif num < 0.6:
+            sent_df.at[row, 'compound_category'] = 0
+        else:
+            sent_df.at[row, 'compound_category'] = 1
+    
+    plt.hist(sent_df['compound_category'])
+    plt.show()
+
+    neg_df = sent_df[sent_df['compound_category'] == -1].copy()
+    neu_df = sent_df[sent_df['compound_category'] == 0].copy()
+    pos_df = sent_df[sent_df['compound_category'] == 1].copy()
+
+    neu_df['lower_text'] = neu_df['tweet'].apply(lambda x: str(x).lower())
+    neu_df['lemmatized'] = neu_df['lower_text'].apply(lambda x: lemmatizer(x))
+
+
+
+
 
 '''
     #EDA
