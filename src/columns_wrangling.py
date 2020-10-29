@@ -155,7 +155,4 @@ basic_drop = [
  'ru_egg',
 
  'ru_followers',
- 'ru_created',
-
- 'retweets',
- 'favorites',]
+ 'ru_created',]
