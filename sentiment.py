@@ -22,9 +22,6 @@ class VaderSentiment():
 if __name__ == "__main__":
     pass
 
-
-
-
     # nltk.downloader.download('vader_lexicon')
     # vader = SentimentIntensityAnalyzer() 
 
