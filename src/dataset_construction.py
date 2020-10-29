@@ -17,7 +17,7 @@ def setup_df(path):
         json_lines = json_file.read().splitlines()
     df_inter = pd.DataFrame(json_lines)
     df_inter.columns = ['json_element']
-    df_inter['json_element'].apply(json.loads)
+    # df_inter['json_element'].apply(json.loads)
     df_final = pd.json_normalize(df_inter['json_element'].apply(json.loads))
     return df_final
 
@@ -42,7 +42,7 @@ def dataset_cleanup(df):
     df['is_quote'] = df['is_quote'] * 1
 
     #computes a 1/0 variable for retweets
-    df['is_retweet'].value_counts()
+    df['is_retweet'] = (df['r_retweets'] % 1) + 1
     df['is_retweet'].fillna(0, inplace = True)
 
     #converts 'U-verified' to 1/0
@@ -114,7 +114,8 @@ def dataset_cleanup(df):
 
 def basic_dataset(df):
     #drops columns for a very basic dataset. No quote tweet or retweet info.
-    return df.drop(columns = basic_drop)
+    breakpoint()
+    return df.drop(columns = basic_drop, axis = 1, inplace = True)
 
 def quote_dataset(df):
     #drops all non-quote-tweet rows, and all retweet variables. Use his dataframe for expanding on quote tweet importance.
@@ -134,6 +135,9 @@ if __name__ == '__main__':
     path = '../data/concatenated_abridged.jsonl'
     df = setup_df(path)
 
+    #df = only the cols listed in features_original
+
+    df = dataset_cleanup(df)
     df_basic = basic_dataset(df)
     df_quote = quote_dataset(df)
     df_retweet = retweet_dataset(df)
