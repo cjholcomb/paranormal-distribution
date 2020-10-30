@@ -103,11 +103,12 @@ def find_top_n(n, df , column = 'tweet_text', feature = '#'):
     top_counts = counts[counts.argsort()[::-1]][:n]
     return top_tags, top_counts
 
-def one_hot_encode_term(top_tags, n = 10, df = df, column = tweet_text):
+
+def one_hot_encode_term(top_tags, df, n = 10, column = 'tweet_text'):
     '''
     Parameters
     ----------
-    top_tags: tags to one hot encode in dataframe (either top hashtags or mentions)
+    top_tags: tags to one hot encode in dataframe
     n: how many you want to one hot encode
     df: dataframe
     column: column in df to loop through, checking if top tag is in the text
@@ -119,18 +120,38 @@ def one_hot_encode_term(top_tags, n = 10, df = df, column = tweet_text):
 
     mentions = []
     for i in top_tags:
-        for text in df.column:
+        for text in df[column]:
             mentions.append((i in text)*1)
             
-    slices = np.linspace(len(df.column), len(mentions), n)
+    slices = np.linspace(len(df[column]), len(mentions), n)
 
     for i in range(len(top_tags)):
         if i == 0:
             df[f'mentions_{top_tags[i]}'] = mentions[:int(slices[i])]
         else:
             df[f'mentions_{top_tags[i]}'] = mentions[int(slices[i-1]):int(slices[i])]
-
     return df
+
+
+def barplot_of_top_n(top_tags, top_counts, save = False, png_name = '../images/top_ten_hashtags.png', title = 'Top 25 Hashtags'):
+    fig, ax = plt.subplots(figsize = (20,10))
+    sns.barplot(top_tags, top_counts, palette='coolwarm')
+    plt.xticks(rotation=70)
+    plt.title(title)
+    if save:
+        plt.savefig(png_name)
+    plt.show();
+
 
 if __name__ == '__main__':
     df = pd.read_json('../../data/basic_dataset.json')
+
+    top_hashtags, top_h_counts = find_top_n(n=10, df= df , column = 'tweet_text', feature = '#')
+    top_mentions, top_m_counts = find_top_n(n=10, df= df , column = 'tweet_text', feature = '@')
+    # barplot_of_top_n(top_hashtags, top_h_counts)
+    # barplot_of_top_n(top_mentions, top_m_counts)
+    #only view non retweeted info
+
+    non_rt_df = df[df['is_retweet'] == 0]
+    new_df = one_hot_encode_term(top_hashtags, n = 10, df = non_rt_df, column = 'tweet_text')
+    new_df = one_hot_encode_term(top_hashtags, n = 10, df = non_rt_df, column = 'tweet_text')
