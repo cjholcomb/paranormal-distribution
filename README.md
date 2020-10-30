@@ -64,7 +64,7 @@ Given we were interested in the effect the debate had on twitter engagement, we 
 
 Before diving into the NLP, we took a look at some of the features that might affect retweets and favorites. Simply noting the length of a tweet, could we determine if there was any correlation? The visual below highlights that tweets over 304 characters seem to have no correlation to an increase in favorites, this is the start of our interest in predicting the engagement with our twitter data.
 
-![image](images/coor_matrix.png)
+![image](images/corr_matrix.png)
 
 Moving into the actual language of the text, we note the following word cloud highlights the top terms mentioned in the twitter text.
 
@@ -97,7 +97,7 @@ What makes VADER special is its ability to use text sentiment and be sensitive t
 
 Each tweet is given a percentage of being “negative” “neutral” or “positive” we identified the highest percentage as the “final label” of the tweets sentiment label and analyzed those results.
 
-![image]('images/sentcount.png')
+![image](images/sentcount.png)
 
 It is very interesting to see that the majority of our tweets are falling into the “neutral” category. With additional time we would have explored the “compound” number which is a normalized score of the tweet. That may be a better representation of sentiment for our tweet.
 
@@ -135,7 +135,6 @@ As our goal here is to provide guidance for someone looking to increase their Tw
 
 We used seven different regressor model types as our baseline (Linear Regression, K Neighbors, Decision Tree, Random Forest, Gradient Boost, Support Vector, and XGBoost.)
 
-[bar chart]
 
 Linear Regression and SVR did not perform well, but all the other 5 had Explained Variance/r2 scores above .7, and three above .8. The winner was XGBoost, which came in above .85.
 
@@ -150,7 +149,7 @@ As time is not a plentiful resource for the Datathon, using gridsearch, a highly
 
 Far and away the most important feature was the mention of @FLOTUS, the official twitter account of First Lady Melliana Trump. This may or may not have to do with the President and First Lady's COVID Diagnosis. 
 
-![image]('images/feature-importance.png')
+![image](images/feature-Importance.png)
 
 ## Conclusion
 
@@ -184,6 +183,7 @@ The following files are meant to be accessed in order.
 6. model_tester.py - contains functions to instantiate, fit, test
 
 **VIDEO:**
+[Video Link](https://drive.google.com/file/d/1M-mhdJOQZxhvJx3R9u-rKgHw36sVw6Uk/view?usp=sharing)
 
 *   Business problem
 *   Sentiment and text vectorization 
