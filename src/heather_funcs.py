@@ -144,7 +144,7 @@ def barplot_of_top_n(top_tags, top_counts, save = False, png_name = '../images/t
 
 
 if __name__ == '__main__':
-    df = pd.read_json('../../data/basic_dataset.json')
+    df = pd.read_json('data/basic_dataset.json')
 
     top_hashtags, top_h_counts = find_top_n(n=10, df= df , column = 'tweet_text', feature = '#')
     top_mentions, top_m_counts = find_top_n(n=10, df= df , column = 'tweet_text', feature = '@')
@@ -153,5 +153,5 @@ if __name__ == '__main__':
     #only view non retweeted info
 
     non_rt_df = df[df['is_retweet'] == 0]
-    new_df = one_hot_encode_term(top_hashtags, n = 10, df = non_rt_df, column = 'tweet_text')
-    new_df = one_hot_encode_term(top_hashtags, n = 10, df = non_rt_df, column = 'tweet_text')
+    new_df = one_hot_encode_term(top_hashtags, n = 10, df = df, column = 'tweet_text')
+    new_df = one_hot_encode_term(top_mentions, n = 10, df = df, column = 'tweet_text')

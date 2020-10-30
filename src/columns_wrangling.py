@@ -17,7 +17,17 @@ features_original = ['Unnamed: 0', 'created_at','id',
  
  'retweet_count', 'favorite_count']
 
-features_basic = ['is_reply','is_quote','is_retweet','sensitive','u_verified','u_egg', 'u_followers', 'u_created']
+model_features_basic = ['is_reply', 'is_quote',
+       'is_retweet', 'sensitive', 'u_verified',
+       'u_egg', 'u_followers', 
+       'mentions_#Debates2020', 'mentions_#Trump2020', 'mentions_#Trump',
+       'mentions_#TrumpHasCovid', 'mentions_#COVID19',
+       'mentions_#BidenHarris2020', 'mentions_#MAGA',
+       'mentions_#PresidentialDebate', 'mentions_#VoteHimOut',
+       'mentions_#PresidentialDebate2020', 'mentions_@realDonaldTrump',
+       'mentions_@JoeBiden', 'mentions_@FLOTUS', 'mentions_@KamalaHarris',
+       'mentions_@POTUS', 'mentions_@TrumpWarRoom', 'mentions_@johnrobertsFox',
+       'mentions_@PressSec', 'mentions_@seanhannity', 'mentions_@FoxNews', 'intop20']
 
  #dictionary to rename the fields, make them more manageable/accesible
 rename_schema = {'Unnamed: 0':'index', 'created_at':'tweet_date', 'id':'tweet_id', 'full_text':'tweet_text', 'is_quote_status':'is_quote', 'retweet_count':'retweets', 'favorite_count':'favorites', 'possibly_sensitive':'sensitive', 'entities.hashtags':'hashtags',
